@@ -31,10 +31,12 @@ import java.io.File
 
 fun main() {
 
-//    val data = readInputFile()
-    val data = listOf(6,5,4,3,2,1)
+    val data = readInputFile()
+//    val data = listOf(6,5,4,3,2,1)
 
-    val subject = ComparisonCounter(data)
+    val pivotStrategy = Median3PivotStrategy()
+
+    val subject = ComparisonCounter(data, pivotStrategy)
     val comparisons = subject.comparisons
     val sortedList = subject.sortedList
 
@@ -43,6 +45,10 @@ fun main() {
     sortedList.take(3).map{ println("$it") }
     println(". . .")
     sortedList.takeLast(3).map{ println("$it") }
+
+//    val i = data.listIterator(0)
+//    println(i.previousIndex())
+//    println(i.nextIndex())
 }
 
 fun readInputFile(): List<Int> {
