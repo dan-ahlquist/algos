@@ -1,4 +1,5 @@
 import java.lang.IllegalStateException
+import java.lang.StringBuilder
 
 class AdjacencyListGraph<T>: MutableGraph<T> {
 
@@ -55,12 +56,24 @@ class AdjacencyListGraph<T>: MutableGraph<T> {
         return result
     }
 
+    override fun print() {
+        for (n in nodes.values)
+            n.print()
+    }
+
     private class Node<T> (val name: T) {
-        private val neighbors: MutableSet<T> = mutableSetOf()
+        private val neighbors: MutableSet<T> = mutableSetOf() //TODO Use List to support parallel edges
 
         fun hasNeighbor(n: T): Boolean { return neighbors.contains(n) }
         fun getNeighbors(): List<T> { return neighbors.toList() }
         fun addNeighbor(n: T) { neighbors.add(n) }
-        fun deleteNeighbor(n: T): Boolean { return neighbors.remove(n) }
+        fun deleteNeighbor(n: T): Boolean { return neighbors.remove(n) } //TODO Use list.removeIf() to remove parallel edges
+
+        fun print() {
+            val sb = StringBuilder("$name -> ")
+            for (n in neighbors)
+                sb.append("${n.toString()} ")
+            println(sb.toString())
+        }
     }
 }

@@ -1,3 +1,5 @@
+import java.io.File
+
 /*
 
 Question 1
@@ -18,5 +20,52 @@ your numeric answer in the space provided. So e.g., if your answer is 5, just ty
 
 */
 fun main() {
+    val g: MutableGraph<Int> = readInputFile("easyTest.txt")
+    g.print()
+}
 
+fun readInputFile(pathname: String): MutableGraph<Int> {
+    val result = AdjacencyListGraph<Int>()
+
+    File(pathname).useLines { lines ->
+        lines.toList().map { line ->
+            val toks = line.split('\t').map(String::toInt)
+            val vertex = toks[0]
+            val neighbors = toks.subList(1, toks.size)
+            for (n in neighbors)
+                result.addEdge(vertex, n)
+        }
+    }
+
+    return result
+}
+
+fun quickTest() {
+    val g: MutableGraph<Int> = AdjacencyListGraph()
+
+    g.addEdge(1, 2)
+    g.addEdge(1, 3)
+    g.addEdge(2, 3)
+
+    g.print()
+
+    println("Deleting edge (1,3).")
+
+    g.deleteEdge(1, 3)
+    g.print()
+
+    println("Deleting node 3.")
+
+    g.deleteNode(3)
+    g.print()
+
+    println("Adding node 4.")
+
+    g.addNode(4)
+    g.print()
+
+    println("Adding edge (4,1).")
+
+    g.addEdge(4, 1)
+    g.print()
 }

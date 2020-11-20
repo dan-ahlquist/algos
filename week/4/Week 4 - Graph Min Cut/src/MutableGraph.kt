@@ -12,4 +12,6 @@ interface MutableGraph<T> {
     fun deleteNode(a: T): Boolean
 
     fun deleteEdge(a: T, b: T): Boolean
+
+    fun print()
 }
