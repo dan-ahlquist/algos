@@ -1,6 +1,5 @@
 import java.lang.IllegalStateException
 import java.lang.StringBuilder
-import kotlin.random.Random
 
 class AdjacencyListUndirectedGraph<T>: MutableUndirectedGraph<T> {
 
@@ -28,11 +27,11 @@ class AdjacencyListUndirectedGraph<T>: MutableUndirectedGraph<T> {
         return nodes[a]?.getNeighbors() ?: emptyList()
     }
 
-    override fun getRandomEdge(r: Random): Pair<T, T> {
-        val node = nodes.values.toList()[ r.nextInt(nodes.size) ]
+    override fun getRandomEdge(): Pair<T, T> {
+        val node = nodes.values.random()
 
         val neighbors = node.getNeighbors()
-        val neighbor = neighbors[ r.nextInt(neighbors.size) ]
+        val neighbor = neighbors.random()
 
         return Pair(node.name, neighbor)
     }
@@ -99,7 +98,7 @@ class AdjacencyListUndirectedGraph<T>: MutableUndirectedGraph<T> {
     }
 
     private class Node<T> (val name: T) {
-        private val neighbors: MutableList<T> = mutableListOf()
+        private val neighbors: MutableList<T> = mutableListOf() // supports parallel edges
 
         fun hasNeighbor(n: T): Boolean { return neighbors.contains(n) }
         fun getNeighbors(): List<T> { return neighbors.toList() }

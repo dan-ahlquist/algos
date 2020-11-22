@@ -20,10 +20,35 @@ to run the algorithm many times with different random seeds, and remember the sm
 your numeric answer in the space provided. So e.g., if your answer is 5, just type 5 in the space provided.
 
 */
+
+const val inputFileName = "kargerMinCut.txt"
+
 fun main() {
-//    val g: MutableGraph<Int> = readInputFile("easyTest.txt")
-//    g.print()
-    quickTest()
+    var g: MutableUndirectedGraph<Int> = readInputFile(inputFileName)
+
+    val n = g.vertexCount
+    val reps = Int.MAX_VALUE
+
+    println("Starting $reps reps for n = $n.")
+
+    var minCutSize = Int.MAX_VALUE
+
+    val r = Random(System.currentTimeMillis())
+
+    for (i in 1..reps) {
+        g = readInputFile(inputFileName)
+        while (g.vertexCount > 2) {
+            val edge = g.getRandomEdge()
+            g.contractEdge(edge.first, edge.second)
+        }
+        val found = g.edgeCount
+        if (found < minCutSize) {
+            minCutSize = found
+            println("New min cut = $minCutSize")
+        }
+    }
+
+    println("Min cut = $minCutSize")
 }
 
 fun readInputFile(pathname: String): MutableUndirectedGraph<Int> {
@@ -31,11 +56,13 @@ fun readInputFile(pathname: String): MutableUndirectedGraph<Int> {
 
     File(pathname).useLines { lines ->
         lines.toList().map { line ->
-            val toks = line.split('\t').map(String::toInt)
+            val toks = line.split('\t').filter { it.isNotBlank() }.map(String::toInt)
             val vertex = toks[0]
             val neighbors = toks.subList(1, toks.size)
-            for (n in neighbors)
+            for (n in neighbors) {
+                if (n > vertex) // prevent duplicate edges, still allow parallel edges, assumes vertices are sorted in input.
                 result.addEdge(vertex, n)
+            }
         }
     }
 
@@ -56,7 +83,7 @@ fun randomEdgeTest(r: Random) {
     println("Selecting random edges:")
 
     for (i in 1..50) {
-        val edge = g.getRandomEdge(r)
+        val edge = g.getRandomEdge()
         println("(${edge.first}, ${edge.second})")
     }
 }
