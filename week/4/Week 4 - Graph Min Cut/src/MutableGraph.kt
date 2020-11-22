@@ -13,5 +13,7 @@ interface MutableGraph<T> {
 
     fun deleteEdge(a: T, b: T): Boolean
 
+    fun contractEdge(a: T, b: T, g: T = a): Boolean
+
     fun print()
 }

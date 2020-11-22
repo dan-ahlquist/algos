@@ -1,3 +1,4 @@
+import java.lang.IllegalArgumentException
 import java.lang.IllegalStateException
 import java.lang.StringBuilder
 
@@ -56,18 +57,34 @@ class AdjacencyListGraph<T>: MutableGraph<T> {
         return result
     }
 
+    override fun contractEdge(a: T, b: T, g: T): Boolean {
+        if(!hasEdge(a, b)) return false
+
+        val aNeighbors = getNeighborsOf(a)
+        val bNeighbors = getNeighborsOf(b)
+        val gNeighbors = aNeighbors + bNeighbors // non-distinct union, preserves existing parallel edges
+
+        deleteNode(a)
+        deleteNode(b)
+
+        for(n in gNeighbors)
+            if (n!=a && n!=b) addEdge(g, n) // no self-loops for g
+
+        return true
+    }
+
     override fun print() {
         for (n in nodes.values)
             n.print()
     }
 
     private class Node<T> (val name: T) {
-        private val neighbors: MutableSet<T> = mutableSetOf() //TODO Use List to support parallel edges
+        private val neighbors: MutableList<T> = mutableListOf()
 
         fun hasNeighbor(n: T): Boolean { return neighbors.contains(n) }
         fun getNeighbors(): List<T> { return neighbors.toList() }
-        fun addNeighbor(n: T) { neighbors.add(n) }
-        fun deleteNeighbor(n: T): Boolean { return neighbors.remove(n) } //TODO Use list.removeIf() to remove parallel edges
+        fun addNeighbor(n: T) { if(n != name) neighbors.add(n) } // no self-loops
+        fun deleteNeighbor(n: T): Boolean { return neighbors.removeIf {it == n} }
 
         fun print() {
             val sb = StringBuilder("$name -> ")

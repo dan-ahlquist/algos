@@ -20,8 +20,9 @@ your numeric answer in the space provided. So e.g., if your answer is 5, just ty
 
 */
 fun main() {
-    val g: MutableGraph<Int> = readInputFile("easyTest.txt")
-    g.print()
+//    val g: MutableGraph<Int> = readInputFile("easyTest.txt")
+//    g.print()
+    collapseTest()
 }
 
 fun readInputFile(pathname: String): MutableGraph<Int> {
@@ -38,6 +39,24 @@ fun readInputFile(pathname: String): MutableGraph<Int> {
     }
 
     return result
+}
+
+fun collapseTest() {
+    val g: MutableGraph<Char> = AdjacencyListGraph()
+
+    g.addEdge('A', 'B')
+    g.addEdge('A', 'C')
+    g.addEdge('A', 'D')
+    g.addEdge('C', 'B')
+    g.addEdge('D', 'B')
+    g.addEdge('D', 'B')
+
+    g.print()
+
+    println("Contracting (A, B) into A.")
+
+    g.contractEdge('A', 'B')
+    g.print()
 }
 
 fun quickTest() {
@@ -67,5 +86,15 @@ fun quickTest() {
     println("Adding edge (4,1).")
 
     g.addEdge(4, 1)
+    g.print()
+
+    println("Adding parallel edge (4,1).")
+
+    g.addEdge(4, 1)
+    g.print()
+
+    println("Deleting node 4.")
+
+    g.deleteNode(4)
     g.print()
 }
