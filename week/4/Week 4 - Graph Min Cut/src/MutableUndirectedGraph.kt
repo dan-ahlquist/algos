@@ -1,9 +1,17 @@
-interface MutableGraph<T> {
+import kotlin.random.Random
+
+interface MutableUndirectedGraph<T> {
+    val vertexCount: Int
+
+    val edgeCount: Int
+
     fun hasNode(a: T): Boolean
 
     fun hasEdge(a: T, b: T): Boolean
 
     fun getNeighborsOf(a: T): List<T>
+
+    fun getRandomEdge(r: Random): Pair<T, T>
 
     fun addNode(a: T)
 

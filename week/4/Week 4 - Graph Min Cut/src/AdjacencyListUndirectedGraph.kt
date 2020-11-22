@@ -1,10 +1,20 @@
-import java.lang.IllegalArgumentException
 import java.lang.IllegalStateException
 import java.lang.StringBuilder
+import kotlin.random.Random
 
-class AdjacencyListGraph<T>: MutableGraph<T> {
+class AdjacencyListUndirectedGraph<T>: MutableUndirectedGraph<T> {
 
     private val nodes: MutableMap<T, Node<T>> = mutableMapOf()
+
+    override val vertexCount: Int
+        get() = nodes.size
+
+    override val edgeCount: Int
+        get() {
+            val edgeEndCount = nodes.values.map { it.getNeighbors().size }.sum()
+            if (edgeEndCount % 2 != 0) throw IllegalStateException("Odd number of edge-ends!")
+            return edgeEndCount / 2
+        }
 
     override fun hasNode(a: T): Boolean {
         return nodes.contains(a)
@@ -16,6 +26,15 @@ class AdjacencyListGraph<T>: MutableGraph<T> {
 
     override fun getNeighborsOf(a: T): List<T> {
         return nodes[a]?.getNeighbors() ?: emptyList()
+    }
+
+    override fun getRandomEdge(r: Random): Pair<T, T> {
+        val node = nodes.values.toList()[ r.nextInt(nodes.size) ]
+
+        val neighbors = node.getNeighbors()
+        val neighbor = neighbors[ r.nextInt(neighbors.size) ]
+
+        return Pair(node.name, neighbor)
     }
 
     override fun addNode(a: T) {
@@ -74,6 +93,7 @@ class AdjacencyListGraph<T>: MutableGraph<T> {
     }
 
     override fun print() {
+        println("Nodes: n=$vertexCount Edges m=$edgeCount")
         for (n in nodes.values)
             n.print()
     }

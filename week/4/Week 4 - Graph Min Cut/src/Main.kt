@@ -1,4 +1,5 @@
 import java.io.File
+import kotlin.random.Random
 
 /*
 
@@ -22,11 +23,11 @@ your numeric answer in the space provided. So e.g., if your answer is 5, just ty
 fun main() {
 //    val g: MutableGraph<Int> = readInputFile("easyTest.txt")
 //    g.print()
-    collapseTest()
+    quickTest()
 }
 
-fun readInputFile(pathname: String): MutableGraph<Int> {
-    val result = AdjacencyListGraph<Int>()
+fun readInputFile(pathname: String): MutableUndirectedGraph<Int> {
+    val result = AdjacencyListUndirectedGraph<Int>()
 
     File(pathname).useLines { lines ->
         lines.toList().map { line ->
@@ -41,8 +42,27 @@ fun readInputFile(pathname: String): MutableGraph<Int> {
     return result
 }
 
+fun randomEdgeTest(r: Random) {
+    val g: MutableUndirectedGraph<Char> = AdjacencyListUndirectedGraph()
+
+    g.addEdge('A', 'B')
+    g.addEdge('A', 'C')
+    g.addEdge('A', 'D')
+    g.addEdge('C', 'B')
+    g.addEdge('D', 'B')
+    g.addEdge('D', 'B')
+
+    g.print()
+    println("Selecting random edges:")
+
+    for (i in 1..50) {
+        val edge = g.getRandomEdge(r)
+        println("(${edge.first}, ${edge.second})")
+    }
+}
+
 fun collapseTest() {
-    val g: MutableGraph<Char> = AdjacencyListGraph()
+    val g: MutableUndirectedGraph<Char> = AdjacencyListUndirectedGraph()
 
     g.addEdge('A', 'B')
     g.addEdge('A', 'C')
@@ -60,7 +80,7 @@ fun collapseTest() {
 }
 
 fun quickTest() {
-    val g: MutableGraph<Int> = AdjacencyListGraph()
+    val g: MutableUndirectedGraph<Int> = AdjacencyListUndirectedGraph()
 
     g.addEdge(1, 2)
     g.addEdge(1, 3)
