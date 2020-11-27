@@ -2,7 +2,9 @@
 typealias Edge<T> = Pair<Node<T>, Node<T>>
 
 data class Node<T> (
-    val data: T
+    val data: T,
+    var finishingTime: Long = 0L,
+    var leaderNode: Node<T>? = null
 )
 
 interface MutableDirectedGraph<T> {

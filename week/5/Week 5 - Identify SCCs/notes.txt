@@ -20,5 +20,5 @@ DFS (G: Graph, i: Node) {
 		}
 	}
 	t++
-	set f (i) = t  // set finishing time after recursive calls completet (depth first)
+	set f(i) = t  // set finishing time after recursive calls completed (depth first)
 }
