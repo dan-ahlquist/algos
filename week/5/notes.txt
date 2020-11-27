@@ -1,0 +1,24 @@
+DFS-Loop (G: Graph) {
+	global t = 0    // # nodes proc'd so far -> finishing time
+	global s = null // current source vertex
+
+	// assume all nodes labeled 1..n
+	for (i in n..1) {
+		if i not yet explored {
+			s = i
+			DFS(G,i)
+		}
+	}
+}
+
+DFS (G: Graph, i: Node) {
+	mark i as explored
+	set leader(i) = node s
+	for ((i,j) in i's edges) {
+		if j not yet explored {
+			DFS (G, j)
+		}
+	}
+	t++
+	set f (i) = t  // set finishing time after recursive calls completet (depth first)
+}
