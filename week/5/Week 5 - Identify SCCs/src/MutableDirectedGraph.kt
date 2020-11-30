@@ -3,16 +3,21 @@ typealias Edge<T> = Pair<Node<T>, Node<T>>
 
 data class Node<T> (
     val data: T,
-    var finishingTime: Long = 0L,
+    var isExplored: Boolean = false,
+    var finishingTime: Int = 0,
     var leaderNode: Node<T>? = null
 )
 
 interface MutableDirectedGraph<T> {
+    val nodeCount: Int
+    fun getNodes(): Set<Node<T>>
     fun hasNode(a: T): Boolean
     fun hasEdge(a: T, b: T): Boolean
-    fun getNeighborsFrom(a: T): List<T>
+    fun getNeighborsFrom(a: Node<T>): List<Node<T>>
     fun reverse(): MutableDirectedGraph<T>
 
     fun addNode(a: T)
     fun addEdge(a: T, b: T)
+
+    fun print()
 }

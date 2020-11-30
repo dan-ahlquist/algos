@@ -2,8 +2,16 @@ import java.lang.IllegalStateException
 
 class MutableDirectedGraphImpl<T>(
         private val nodes: MutableMap<T, Node<T>> = mutableMapOf(),
-        private val edges: MutableList<Edge<T>> = mutableListOf()
+        private val edges: MutableList<Edge<T>> = mutableListOf(),
+        private val topoSorter: TopoSorter = TopoSorterImpl()
 ): MutableDirectedGraph<T> {
+
+    override fun getNodes(): Set<Node<T>> {
+        return nodes.values.toSet()
+    }
+
+    override val nodeCount: Int
+        get() = nodes.size
 
     override fun hasNode(a: T): Boolean {
         return nodes.containsKey(a)
@@ -13,8 +21,8 @@ class MutableDirectedGraphImpl<T>(
         return edges.any { it.first.data == a && it.second.data == b }
     }
 
-    override fun getNeighborsFrom(a: T): List<T> {
-        return edges.filter { it.first.data == a }.map { it.second.data }
+    override fun getNeighborsFrom(a: Node<T>): List<Node<T>> {
+        return edges.filter { it.first == a }.map { it.second }
     }
 
     override fun reverse(): MutableDirectedGraph<T> {
@@ -28,10 +36,23 @@ class MutableDirectedGraphImpl<T>(
     }
 
     override fun addEdge(a: T, b: T) {
-        val aNode = nodes.getOrDefault(a, Node(a))
-        val bNode = nodes.getOrDefault(b, Node(b))
+        if (!nodes.contains(a)) { nodes[a] = Node(a) }
+        if (!nodes.contains(b)) { nodes[b] = Node(b) }
 
-        edges.add(Edge(aNode, bNode))
+        val aNode = nodes[a]
+        val bNode = nodes[b]
+        edges.add(Edge(aNode!!, bNode!!))
+    }
+
+    override fun print() {
+        println("${nodes.size} nodes, ${edges.size} edges.")
+        for (node in nodes.values) {
+            val sb = StringBuffer("${node.data} -> ")
+            for (neighbor in getNeighborsFrom(node)) {
+                sb.append("${neighbor.data }")
+            }
+            println(sb.toString())
+        }
     }
 }
 
