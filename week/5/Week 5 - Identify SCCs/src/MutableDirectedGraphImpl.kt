@@ -2,8 +2,7 @@ import java.lang.IllegalStateException
 
 class MutableDirectedGraphImpl<T>(
         private val nodes: MutableMap<T, Node<T>> = mutableMapOf(),
-        private val edges: MutableList<Edge<T>> = mutableListOf(),
-        private val topoSorter: TopoSorter = TopoSorterImpl()
+        private val edges: MutableList<Edge<T>> = mutableListOf()
 ): MutableDirectedGraph<T> {
 
     override fun getNodes(): Set<Node<T>> {
@@ -25,11 +24,6 @@ class MutableDirectedGraphImpl<T>(
         return edges.filter { it.first == a }.map { it.second }
     }
 
-    override fun reverse(): MutableDirectedGraph<T> {
-        val reversedEdges = edges.map { it.reverse() }.toMutableList()
-        return MutableDirectedGraphImpl(this.nodes, reversedEdges)
-    }
-
     override fun addNode(a: T) {
         if (hasNode(a)) throw IllegalStateException("This graph already has a node $a")
         nodes[a] = Node(a)
@@ -44,12 +38,23 @@ class MutableDirectedGraphImpl<T>(
         edges.add(Edge(aNode!!, bNode!!))
     }
 
+    override fun resetExplored() {
+        nodes.values.forEach { n ->
+            n.isExplored = false
+        }
+    }
+
+    override fun reverse(): MutableDirectedGraph<T> {
+        val reversedEdges = edges.map { it.reverse() }.toMutableList()
+        return MutableDirectedGraphImpl(this.nodes, reversedEdges)
+    }
+
     override fun print() {
         println("${nodes.size} nodes, ${edges.size} edges.")
         for (node in nodes.values) {
             val sb = StringBuffer("${node.data} -> ")
             for (neighbor in getNeighborsFrom(node)) {
-                sb.append("${neighbor.data }")
+                sb.append("${neighbor.data} ")
             }
             println(sb.toString())
         }

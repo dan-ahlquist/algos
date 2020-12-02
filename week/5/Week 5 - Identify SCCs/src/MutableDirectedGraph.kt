@@ -5,7 +5,7 @@ data class Node<T> (
     val data: T,
     var isExplored: Boolean = false,
     var finishingTime: Int = 0,
-    var leaderNode: Node<T>? = null
+    var containingScc: Int = 0
 )
 
 interface MutableDirectedGraph<T> {
@@ -14,10 +14,12 @@ interface MutableDirectedGraph<T> {
     fun hasNode(a: T): Boolean
     fun hasEdge(a: T, b: T): Boolean
     fun getNeighborsFrom(a: Node<T>): List<Node<T>>
-    fun reverse(): MutableDirectedGraph<T>
-
     fun addNode(a: T)
+
     fun addEdge(a: T, b: T)
+
+    fun resetExplored()
+    fun reverse(): MutableDirectedGraph<T>
 
     fun print()
 }
