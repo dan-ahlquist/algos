@@ -20,8 +20,8 @@ class MutableDirectedGraphImpl<T>(
         return edges.any { it.first.data == a && it.second.data == b }
     }
 
-    override fun getNeighborsFrom(a: Node<T>): List<Node<T>> {
-        return edges.filter { it.first == a }.map { it.second }
+    override fun getNeighborsFrom(a: Node<T>): Set<Node<T>> {
+        return a.neighborsFrom
     }
 
     override fun addNode(a: T) {
@@ -36,6 +36,8 @@ class MutableDirectedGraphImpl<T>(
         val aNode = nodes[a]
         val bNode = nodes[b]
         edges.add(Edge(aNode!!, bNode!!))
+
+        aNode.neighborsFrom.add(bNode)
     }
 
     override fun resetExplored() {
@@ -44,9 +46,20 @@ class MutableDirectedGraphImpl<T>(
         }
     }
 
-    override fun reverse(): MutableDirectedGraph<T> {
-        val reversedEdges = edges.map { it.reverse() }.toMutableList()
-        return MutableDirectedGraphImpl(this.nodes, reversedEdges)
+    private fun resetNeighbors() {
+        nodes.values.forEach { n ->
+            n.neighborsFrom.clear()
+        }
+    }
+
+    override fun reverse() {
+        resetNeighbors()
+
+        val oldEdges = edges.toMutableList() //shallow copy
+        edges.clear()
+        oldEdges.forEach {
+            addEdge(it.second.data, it.first.data)
+        }
     }
 
     override fun print() {
@@ -59,8 +72,4 @@ class MutableDirectedGraphImpl<T>(
             println(sb.toString())
         }
     }
-}
-
-fun <T> Edge<T>.reverse(): Edge<T> {
-    return Edge(this.second, this.first)
 }

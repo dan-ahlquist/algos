@@ -25,9 +25,10 @@ fun main() {
 
     println("Reading input")
     val g = readInput("SCC.txt")
+//    val g = readInput("book-quiz-8-6.txt")
 
     println("Reversing g - > gRev")
-    val gRev = g.reverse()
+    g.reverse()
 
 //    println("***** gRev *****")
 //    gRev.print()
@@ -38,7 +39,7 @@ fun main() {
 //    println()
 
     println("Sorting gRev")
-    TopoSorterImpl().sort(gRev)
+    TopoSorterImpl().sort(g)
 
 //    println("***** gRev - topo sorted *****")
 //    gRev.print()
@@ -49,8 +50,8 @@ fun main() {
 //    println()
 
     println("Reversing gRev -> gPrime")
-    val gPrime = gRev.reverse() // original edge directions, now marked with topo ordering
-    gPrime.resetExplored()
+    g.reverse() // original edge directions, now marked with topo ordering
+    g.resetExplored()
 
 //    println("***** gPrime *****")
 //    gPrime.print()
@@ -61,14 +62,14 @@ fun main() {
 //    println()
 
     println("Finding SCCs in gPrime")
-    SCCCollectorImpl().findSCCs(gPrime)
+    SCCCollectorImpl().findSCCs(g)
 
 //    println("***** gPrime - SCCed *****")
 //    gPrime.print()
 
     val resultMap = mutableMapOf<Int, Int>() // SCC# -> count
 
-    gPrime.getNodes()
+    g.getNodes()
         .sortedBy {
             it.containingScc
         }
