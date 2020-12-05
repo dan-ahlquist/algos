@@ -4,7 +4,8 @@ data class Edge<T, W> (val from: Node<T>, val to: Node<T>, val weight: W)
 
 class Node<T> (
     val data: T,
-    var isExplored: Boolean = false
+    var isExplored: Boolean = false,
+    var shortestPathLength: Int = Int.MAX_VALUE
 )
 
 interface MutableDirectedGraph<T, W> {
