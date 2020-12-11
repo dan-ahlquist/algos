@@ -2,10 +2,10 @@ import java.lang.IllegalStateException
 
 class MutableDirectedGraphImpl<T, W>(
         private val nodes: MutableMap<T, Node<T>> = mutableMapOf(),
-        private val edges: MutableList<Edge<T, W>> = mutableListOf()
-): MutableDirectedGraph<T, W> {
+        private val edges: MutableList<Edge<T>> = mutableListOf()
+): MutableDirectedGraph<T> {
 
-    val edgesFrom = mutableMapOf<Node<T>, MutableSet<Edge<T, W>>>()
+    val edgesFrom = mutableMapOf<Node<T>, MutableSet<Edge<T>>>()
 
     override fun getNodes(): Set<Node<T>> {
         return nodes.values.toSet()
@@ -26,7 +26,7 @@ class MutableDirectedGraphImpl<T, W>(
         return edges.any { it.from.data == a && it.to.data == b }
     }
 
-    override fun getEdgesFrom(a: Node<T>): Set<Edge<T, W>> {
+    override fun getEdgesFrom(a: Node<T>): Set<Edge<T>> {
         return edgesFrom[a] ?: emptySet()
     }
 
@@ -35,13 +35,13 @@ class MutableDirectedGraphImpl<T, W>(
         nodes[a] = Node(a)
     }
 
-    override fun addEdge(a: T, b: T, weight: W) {
+    override fun addEdge(a: T, b: T, weight: Int) {
         if (!nodes.contains(a)) { nodes[a] = Node(a) }
         if (!nodes.contains(b)) { nodes[b] = Node(b) }
 
         val aNode = nodes[a]
         val bNode = nodes[b]
-        val newEdge = Edge(aNode!!, bNode!!, weight)
+        val newEdge = Edge(aNode!!, bNode!!, weight, Int.MAX_VALUE)
         edges.add(newEdge)
 
         val aEdges = edgesFrom.getOrPut(aNode, { mutableSetOf() })

@@ -5,5 +5,5 @@ interface ShortestPathFinder {
      *  Postconditions: All nodes of `g` which are connected to `s` have their shortest path length set as the shortest
      *  path length from `s` to that node.
      */
-    fun <T, W> findShortestPaths (g: MutableDirectedGraph<T, W>, s: Node<T>)
+    fun <T> findShortestPaths (g: MutableDirectedGraph<T>, s: Node<T>)
 }

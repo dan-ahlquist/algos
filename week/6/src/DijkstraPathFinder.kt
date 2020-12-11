@@ -1,8 +1,9 @@
 import java.lang.IllegalArgumentException
+import java.util.*
 
 class DijkstraPathFinder: ShortestPathFinder {
 
-    override fun <T, W> findShortestPaths(g: MutableDirectedGraph<T, W>, s: Node<T>) {
+    override fun <T> findShortestPaths(g: MutableDirectedGraph<T>, s: Node<T>) {
         if (!g.hasNode(s.data)) throw IllegalArgumentException("Specified starting node (${s.data}) does not exist in this graph.")
 
         g.getNodes().forEach {
@@ -13,6 +14,25 @@ class DijkstraPathFinder: ShortestPathFinder {
         val X = mutableSetOf(s)
         s.shortestPathLength = 0
 
+        val F = TreeSet<Edge<T>> { a, b -> a.score.compareTo(b.score) }
 
+        for (e in g.getEdgesFrom(s)) {
+            e.score = s.shortestPathLength + e.weight
+            F.add(e)
+        }
+
+        while (F.isNotEmpty()) {
+            val vw = F.first()
+            F.remove(vw)
+
+            val v = vw.from
+            val w = vw.to
+            X.add(w)
+
+            w.shortestPathLength = v.shortestPathLength + vw.weight
+
+            F.removeIf { it.to == w }
+            
+        }
     }
 }
