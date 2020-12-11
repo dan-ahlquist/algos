@@ -27,5 +27,13 @@ between vertices and their positions in the heap.
 const val fileName = "dijkstraData.txt"
 
 fun main() {
+    val g = MutableDirectedGraphImpl<Int, Int>()
+
+    val spf: ShortestPathFinder = DijkstraPathFinder()
+
+    val s = g.getNode(1)
+
+    spf.findShortestPaths(g, s)
+
 
 }

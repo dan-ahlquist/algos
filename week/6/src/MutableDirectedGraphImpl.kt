@@ -18,6 +18,10 @@ class MutableDirectedGraphImpl<T, W>(
         return nodes.containsKey(a)
     }
 
+    override fun getNode(a: T): Node<T> {
+        return nodes[a]!!
+    }
+
     override fun hasEdge(a: T, b: T): Boolean {
         return edges.any { it.from.data == a && it.to.data == b }
     }

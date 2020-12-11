@@ -12,6 +12,7 @@ interface MutableDirectedGraph<T, W> {
     val nodeCount: Int
     fun getNodes(): Set<Node<T>>
     fun hasNode(a: T): Boolean
+    fun getNode(a: T): Node<T>
     fun hasEdge(a: T, b: T): Boolean
     fun getEdgesFrom(a: Node<T>): Set<Edge<T, W>>
     fun addNode(a: T)
