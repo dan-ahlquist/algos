@@ -1,3 +1,7 @@
+import java.io.File
+import java.lang.Exception
+import java.lang.StringBuilder
+
 /*
 
 The file contains an adjacency list representation of an undirected weighted graph with 200 vertices labeled 1 to 200.
@@ -25,9 +29,10 @@ between vertices and their positions in the heap.
  */
 
 const val fileName = "dijkstraData.txt"
+//const val fileName = "easy.txt"
 
 fun main() {
-    val g = MutableDirectedGraphImpl<Int, Int>()
+    val g = readInput(fileName)
 
     val spf: ShortestPathFinder = DijkstraPathFinder()
 
@@ -35,5 +40,35 @@ fun main() {
 
     spf.findShortestPaths(g, s)
 
+    report(g)
+}
 
+private fun report(g: MutableDirectedGraphImpl<Int, Int>) {
+    val queries = listOf(7, 37, 59, 82, 99, 115, 133, 165, 188, 197)
+//    val queries = listOf(1,2,3,4)
+    val sb = StringBuilder()
+    for (q in queries) {
+        val n = g.getNode(q)
+        sb.append("${n.shortestPathLength},")
+//        println("Node $q has shortest path = ${n.shortestPathLength}")
+        g.printNode(n)
+    }
+    println("${sb.toString()}")
+}
+
+fun readInput(filename: String): MutableDirectedGraphImpl<Int, Int> {
+    val g = MutableDirectedGraphImpl<Int, Int>()
+    File(filename).useLines {
+        it.forEach { line ->
+            val toks = line.split('\t')
+            val from = toks[0]
+            toks.drop(1).forEach {
+                try {
+                    val (to, weight) = it.split(',')
+                    g.addEdge(from.toInt(), to.toInt(), weight.toInt())
+                } catch (e: Exception) {}
+            }
+        }
+    }
+    return g
 }

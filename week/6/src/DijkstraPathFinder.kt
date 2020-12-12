@@ -32,7 +32,13 @@ class DijkstraPathFinder: ShortestPathFinder {
             w.shortestPathLength = v.shortestPathLength + vw.weight
 
             F.removeIf { it.to == w }
-            
+
+            // Add to the frontier all edges from w, which end outside X
+            val newFrontierEdges = g.getEdgesFrom(w).filter { !X.contains(it.to) }
+            newFrontierEdges.forEach {
+                it.score = w.shortestPathLength + it.weight
+                F.add(it)
+            }
         }
     }
 }

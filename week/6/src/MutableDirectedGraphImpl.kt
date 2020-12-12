@@ -74,10 +74,18 @@ class MutableDirectedGraphImpl<T, W>(
         println("${nodes.size} nodes, ${edges.size} edges.")
         for (node in nodes.values) {
             val sb = StringBuffer("${node.data} -> ")
-            for (e in edgesFrom[node] ?: emptySet()) {
+            for (e in edgesFrom[node] ?: mutableSetOf()) {
                 sb.append("${e.to.data} ")
             }
             println(sb.toString())
         }
+    }
+
+    override fun printNode(a: Node<T>) {
+        val sb = StringBuilder("${a.data}\t")
+        for (e in edgesFrom[a] ?: mutableSetOf()) {
+            sb.append("${e.to.data},${e.weight}\t")
+        }
+        println(sb.toString())
     }
 }

@@ -1,5 +1,3 @@
-import org.graalvm.compiler.graph.Edges
-
 data class Edge<T> (val from: Node<T>, val to: Node<T>, val weight: Int, var score: Int)
 
 class Node<T> (
@@ -23,4 +21,5 @@ interface MutableDirectedGraph<T> {
     fun reverse()
 
     fun print()
+    fun printNode(a: Node<T>)
 }
