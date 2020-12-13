@@ -28,36 +28,59 @@ between vertices and their positions in the heap.
 
  */
 
+const val startNode = 1
 const val fileName = "dijkstraData.txt"
+//val queries = listOf(7, 37, 59, 82, 99, 115, 133, 165, 188, 197)
+val queries = listOf(188)
 //const val fileName = "easy.txt"
+//val queries = listOf(1,2,3,4)
 
 fun main() {
     val g = readInput(fileName)
-
-    val spf: ShortestPathFinder = DijkstraPathFinder()
-
-    val s = g.getNode(1)
-
-    spf.findShortestPaths(g, s)
-
+    val s = g.getNode(startNode)
+    DijkstraPathFinder().findPaths(g, s)
     report(g)
+//    bigReport(g)
 }
 
-private fun report(g: MutableDirectedGraphImpl<Int, Int>) {
-    val queries = listOf(7, 37, 59, 82, 99, 115, 133, 165, 188, 197)
-//    val queries = listOf(1,2,3,4)
+private fun report(g: WeightedUndirectedGraph) {
     val sb = StringBuilder()
     for (q in queries) {
         val n = g.getNode(q)
-        sb.append("${n.shortestPathLength},")
-//        println("Node $q has shortest path = ${n.shortestPathLength}")
+        sb.append("${n.shortestPath},")
+        println("Node $q has shortest path = ${n.shortestPath}")
         g.printNode(n)
     }
     println("${sb.toString()}")
 }
 
-fun readInput(filename: String): MutableDirectedGraphImpl<Int, Int> {
-    val g = MutableDirectedGraphImpl<Int, Int>()
+private fun auditFile() {
+    File(fileName).useLines {
+        it.forEach { line ->
+            val toks = line.split('\t')
+            val from = toks[0]
+            val nodeCount = line.count { c -> c == ',' }
+            println("$from has $nodeCount nodes")
+        }
+    }
+}
+
+private fun bigReport(g: WeightedUndirectedGraph) {
+    for (i in 1..200) {
+        val n = g.getNode(i)
+        g.printNode(n)
+    }
+}
+
+//private fun bigReport(g: WeightedUndirectedGraph) {
+//    for (i in 1..200) {
+//        val n = g.getNode(i)
+//        println("${n.label} has ${n.edgesFrom.size} nodes")
+//    }
+//}
+
+fun readInput(filename: String): WeightedUndirectedGraph {
+    val g = WeightedUndirectedGraphImpl()
     File(filename).useLines {
         it.forEach { line ->
             val toks = line.split('\t')
@@ -66,7 +89,7 @@ fun readInput(filename: String): MutableDirectedGraphImpl<Int, Int> {
                 try {
                     val (to, weight) = it.split(',')
                     g.addEdge(from.toInt(), to.toInt(), weight.toInt())
-                    g.addEdge(to.toInt(), from.toInt(), weight.toInt())
+//                    g.addEdge(to.toInt(), from.toInt(), weight.toInt())
                 } catch (e: Exception) {}
             }
         }
