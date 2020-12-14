@@ -1,3 +1,4 @@
+import java.io.File
 
 /*
 The goal of this problem is to implement the "Median Maintenance" algorithm (covered in the Week 3 lecture on heap
@@ -13,5 +14,25 @@ OPTIONAL EXERCISE: Compare the performance achieved by heap-based and search-tre
  */
 
 fun main() {
+    val mm = MedianMaintainer()
 
+    val filename = "Median.txt"
+
+    var total = 0
+
+    File(filename).useLines {
+        it.forEach { line ->
+            val n = line.toInt()
+            mm.insert(n)
+            total += mm.median!!
+        }
+    }
+
+    println("$total (mod 10000 = ${total % 10000})")
+
+    println("Final median = ${mm.median}")
+
+    println("Queue size = ${mm.left.size} / ${mm.right.size}")
+
+    println("${mm.left.peek()} | ${mm.median} | ${mm.right.peek()}")
 }
