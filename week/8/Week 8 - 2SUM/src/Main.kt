@@ -1,3 +1,5 @@
+import java.io.File
+
 /*
 The goal of this problem is to implement a variant of the 2-SUM algorithm covered in this week's lectures.
 
@@ -14,6 +16,32 @@ OPTIONAL CHALLENGE: If this problem is too easy for you, try implementing your o
 could compare performance under the chaining and open addressing approaches to resolving collisions.
  */
 
-fun main() {
+const val filename = "2sum.txt"
 
+fun main() {
+    val inputs = readInputFile(filename)
+    println("Read in ${inputs.size} distinct values.")
+
+    val queries = (-10000L..10000L)
+    var count = 0
+    outer@ for (query in queries) {
+        println("Query = $query    Count = $count")
+        for (current in inputs) {
+            val diff = query - current
+            if (query != diff && inputs.contains(diff)) {
+                count++
+                continue@outer
+            }
+        }
+    }
+
+    println("$count hits")
+}
+
+fun readInputFile(filename: String): Set<Long> {
+    val result = mutableSetOf<Long>()
+    File(filename).forEachLine { line ->
+        result.add(line.toLong())
+    }
+    return result
 }
