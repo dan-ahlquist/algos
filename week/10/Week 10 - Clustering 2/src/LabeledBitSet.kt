@@ -1,0 +1,20 @@
+import java.util.BitSet
+import java.util.zip.DataFormatException
+
+typealias Node = LabeledBitSet<Int>
+
+class LabeledBitSet<L>(val label: L, val bits: List<Int>) : BitSet(bits.size) {
+    init {
+        bits.forEachIndexed { index, value ->
+            when (value) {
+                0 -> this.set(index, false)
+                1 -> this.set(index, true)
+                else -> throw DataFormatException("Tried to set a bit to $value.")
+            }
+        }
+    }
+
+    fun copy(): LabeledBitSet<L> {
+        return LabeledBitSet(label, bits)
+    }
+}
