@@ -3,7 +3,10 @@ import java.util.zip.DataFormatException
 
 typealias Node = LabeledBitSet<Int>
 
-class LabeledBitSet<L>(val label: L, val bits: List<Int>) : BitSet(bits.size) {
+class LabeledBitSet<L>(val label: L, bits: List<Int>) : BitSet(bits.size) {
+
+    private val size = bits.size
+
     init {
         bits.forEachIndexed { index, value ->
             when (value) {
@@ -14,7 +17,27 @@ class LabeledBitSet<L>(val label: L, val bits: List<Int>) : BitSet(bits.size) {
         }
     }
 
+    val bits: List<Int>
+        get() {
+            val result = mutableListOf<Int>()
+            for (i in 0 until this.size)
+                result.add(boolToDigit(this.get(i)))
+            return result
+        }
+
     fun copy(): LabeledBitSet<L> {
         return LabeledBitSet(label, bits)
     }
+
+    override fun toString(): String {
+        val sb = StringBuffer()
+        bits.forEach {
+            sb.append(" $it")
+        }
+        return "[$label]${sb.toString()}"
+    }
+
+    private fun boolToDigit(b: Boolean): Int = if(b) 1 else 0
+
 }
+

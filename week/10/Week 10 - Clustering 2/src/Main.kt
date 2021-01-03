@@ -31,11 +31,18 @@ is there some way you can identify the smallest distances without explicitly loo
 const val filename = "clustering_big.txt"
 
 fun main() {
-    println("Heyo")
+//    val nodes = readInput()
 
-    val nodes = readInput()
+    val cheesy = LabeledBitSet(999, listOf(0,1,1,0))
 
-
+    println(cheesy)
+    println("*************")
+    val neighbors = NeighborFinder().findNeighbors(cheesy)
+    neighbors.forEach {
+        println(it)
+    }
+    println("*************")
+    println("${neighbors.size}")
 }
 
 private fun readInput(): Set<Node> {
