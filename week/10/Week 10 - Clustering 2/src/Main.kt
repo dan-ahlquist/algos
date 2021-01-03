@@ -8,7 +8,7 @@ in fact, that the distances (i.e., edge costs) are only defined implicitly, rath
 clustering_big.txt
  The format is:
 
-[# of nodes] [# of bits for each node's label]
+### Deleted by me ### [# of nodes] [# of bits for each node's label]
 [first bit of node 1] ... [last bit of node 1]
 [first bit of node 2] ... [last bit of node 2]
 ...
@@ -29,36 +29,30 @@ is there some way you can identify the smallest distances without explicitly loo
  */
 
 const val filename = "clustering_big.txt"
+const val entries = 200000
+const val width = 24
 
 fun main() {
-//    val nodes = readInput()
-
-    val cheesy = LabeledBitSet(999, listOf(0,1,1,0))
-
-    println(cheesy)
-    println("*************")
-    val neighbors = NeighborFinder().findNeighbors(cheesy)
-    neighbors.forEach {
-        println(it)
-    }
-    println("*************")
-    println("${neighbors.size}")
+    val nodes = readInput()
+    println("${nodes.size}")
 }
 
-private fun readInput(): Set<Node> {
+private fun readInput(): Map<Int, Node> {
+
+    println("Reading input for $entries entries of width $width.")
+
     File(filename).useLines {
-        val (entries, width) = it.first().split(' ')
-        println("Reading input for $entries entries of width $width.")
+        val result = mutableMapOf<Int, Node>()
 
-        val result = mutableSetOf<Node>()
-
-        it.drop(1).forEachIndexed { index, line ->
-            val bits = line.split(' ').map(String::toInt)
-            result.add(LabeledBitSet(index, bits))
+        it.forEachIndexed { index, line ->
+            val bits = line.split(' ')
+                    .filterNot(String::isNullOrBlank)
+                    .map(String::toInt)
+            result[index] = LabeledBitSet(index, bits)
         }
 
-        assert(result.size == entries.toInt())
-            {"File declared ${entries.toInt()} but actually contained result.size entries!"}
+        assert(result.size == entries)
+            {"File declared $entries but actually contained result.size entries!"}
 
         return result
     }
