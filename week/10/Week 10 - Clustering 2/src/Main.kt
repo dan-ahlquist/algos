@@ -33,8 +33,7 @@ const val entries = 200000
 const val width = 24
 
 fun main() {
-    val nodes = readInput()
-    println("${nodes.size}")
+    val nodes: Map<Int, Node> = readInput()
 }
 
 private fun readInput(): Map<Int, Node> {
