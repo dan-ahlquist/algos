@@ -1,8 +1,9 @@
+// Cribbed from https://chercher.tech/kotlin/disjoint-set-kotlin
 
-class UnionFind<T>(data: Collection<T>) {
-
-    private val parent = IntArray(data.size)
-    var count = data.size; private set // no touchy
+class UnionFind(val size: Int) {
+    private val parent = IntArray(size)
+    private val rank = ByteArray(size)
+    var count = size; private set // no touchy
 
     init {
         for (i in parent.indices) {
@@ -15,13 +16,26 @@ class UnionFind<T>(data: Collection<T>) {
     }
 
     fun find(v: Int): Int {
+        var curr = v
+        while (parent[curr] != curr) {
+            parent[curr] = parent[parent[curr]]
+            curr = parent[curr]
+        }
+        return curr
     }
 
     fun union(v: Int, w: Int) {
         val rootV = find(v)
         val rootW = find(w)
         if (rootV == rootW) return
-        //TODO
+        if (rank[rootV] > rank[rootW]) {
+            parent[rootW] = rootV
+        } else if (rank[rootW] > rank[rootV]) {
+            parent[rootV] = rootW
+        } else {
+            parent[rootV] = rootW
+            rank[rootW]++
+        }
         count--
     }
 }

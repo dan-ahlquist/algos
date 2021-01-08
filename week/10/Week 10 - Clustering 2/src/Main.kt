@@ -33,7 +33,23 @@ const val entries = 200000
 const val width = 24
 
 fun main() {
-    val nodes: Map<Int, Node> = readInput()
+    val nodes = readInput()
+    println("${nodes.size}")
+
+//    val a = 29
+//    val b = 20
+//    val c = 12
+//    val uf = UnionFind(30)
+//    println("a/29 is in group ${uf.find(a)}")
+//    println("b/20 is in group ${uf.find(b)}")
+//    println("c/12 is in group ${uf.find(c)}")
+//    println("a-b connected? ${uf.connected(a, b)}")
+//
+//    uf.union(20, 29)
+//    println("a/29 is in group ${uf.find(a)}")
+//    println("b/20 is in group ${uf.find(b)}")
+//    println("c/12 is in group ${uf.find(c)}")
+//    println("a-b connected? ${uf.connected(a, b)}")
 }
 
 private fun readInput(): Map<Int, Node> {
