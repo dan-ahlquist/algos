@@ -6,6 +6,8 @@ typealias Node = LabeledBitSet<Int>
 class LabeledBitSet<L>(val label: L, bits: List<Int>) : BitSet(bits.size) {
 
     private val size = bits.size
+    val bitString
+        get() = bits.joinToString("", transform = Int::toString)
 
     init {
         bits.forEachIndexed { index, value ->
@@ -34,7 +36,7 @@ class LabeledBitSet<L>(val label: L, bits: List<Int>) : BitSet(bits.size) {
         bits.forEach {
             sb.append(" $it")
         }
-        return "[$label]${sb.toString()}"
+        return "[$label]$sb"
     }
 
     private fun boolToDigit(b: Boolean): Int = if(b) 1 else 0

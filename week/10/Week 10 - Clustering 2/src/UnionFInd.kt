@@ -38,4 +38,12 @@ class UnionFind(val size: Int) {
         }
         count--
     }
+
+    fun partitionCount(): Int {
+        val distinctParents = mutableSetOf<Int>()
+        (0 until size).forEach {
+            distinctParents.add(find(it))
+        }
+        return distinctParents.size
+    }
 }

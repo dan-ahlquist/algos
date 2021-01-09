@@ -2,8 +2,10 @@ class NeighborFinder {
     fun findNeighbors(node: Node): Set<Node> {
         val result = mutableSetOf<Node>()
 
-        result.addAll(getNeighbors1(node))
-        result.addAll(getNeighbors2(node))
+        val n1 = getNeighbors1(node)
+        val n2 = getNeighbors2(node)
+        result.addAll(n1)
+        result.addAll(n2)
 
         return result
     }
@@ -11,7 +13,7 @@ class NeighborFinder {
     private fun getNeighbors1(node: Node): Set<Node> {
         val result = mutableSetOf<Node>()
 
-        val combinations = 0 .. node.length()
+        val combinations = 0 until node.bits.size
         combinations.forEach { index ->
             val neighbor = node.copy()
             neighbor.flip(index)
@@ -25,7 +27,7 @@ class NeighborFinder {
         val combinator = Combinator()
         val result = mutableSetOf<Node>()
 
-        val combinations = combinator.choose2(0 .. node.length())
+        val combinations = combinator.choose2(0 until node.bits.size)
         combinations.forEach { pair ->
             val neighbor = node.copy()
             neighbor.flip(pair.first)

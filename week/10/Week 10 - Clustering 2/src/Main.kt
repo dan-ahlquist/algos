@@ -26,48 +26,45 @@ how many clusters are needed to ensure that no pair of nodes with all but 2 bits
 NOTE: The graph implicitly defined by the data file is so big that you probably can't write it out explicitly, let alone
 sort the edges by cost.  So you will have to be a little creative to complete this part of the question.  For example,
 is there some way you can identify the smallest distances without explicitly looking at every pair of nodes?
+
+Tried: 7806, 7437, 6118
+
  */
 
 const val filename = "clustering_big.txt"
-const val entries = 200000
 const val width = 24
 
 fun main() {
     val nodes = readInput()
-    println("${nodes.size}")
 
-//    val a = 29
-//    val b = 20
-//    val c = 12
-//    val uf = UnionFind(30)
-//    println("a/29 is in group ${uf.find(a)}")
-//    println("b/20 is in group ${uf.find(b)}")
-//    println("c/12 is in group ${uf.find(c)}")
-//    println("a-b connected? ${uf.connected(a, b)}")
-//
-//    uf.union(20, 29)
-//    println("a/29 is in group ${uf.find(a)}")
-//    println("b/20 is in group ${uf.find(b)}")
-//    println("c/12 is in group ${uf.find(c)}")
-//    println("a-b connected? ${uf.connected(a, b)}")
+    val k = Clusterizer().clusterize(nodes)
+    println("k = $k")
 }
 
 private fun readInput(): Map<Int, Node> {
 
-    println("Reading input for $entries entries of width $width.")
-
     File(filename).useLines {
         val result = mutableMapOf<Int, Node>()
 
-        it.forEachIndexed { index, line ->
+        val checkSet = mutableSetOf<String>()
+        var index = 0
+        it.forEach { line ->
             val bits = line.split(' ')
                     .filterNot(String::isNullOrBlank)
                     .map(String::toInt)
-            result[index] = LabeledBitSet(index, bits)
+            val newNode = Node(index, bits)
+            val bitString = newNode.bitString
+            if (!checkSet.contains(bitString)) {
+                result[index] = newNode
+                checkSet.add(bitString)
+                index++
+            }
+
+            assert(bits.size == width)
+                {"Declared width = $width but entry #$index has ${bits.size}!"}
         }
 
-        assert(result.size == entries)
-            {"File declared $entries but actually contained result.size entries!"}
+        println("Read in ${result.size} entries.")
 
         return result
     }
