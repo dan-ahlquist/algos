@@ -1,3 +1,5 @@
+import java.io.File
+
 /*
 Question 1
 In this programming problem and the next you'll code up the clustering algorithm from lecture for computing a
@@ -8,7 +10,7 @@ Download the text file below.
 clustering1.txt
 This file describes a distance function (equivalently, a complete graph with edge costs).  It has the following format:
 
-[number_of_nodes]
+### Removed by me ### [number_of_nodes]
 [edge 1 node 1] [edge 1 node 2] [edge 1 cost]
 [edge 2 node 1] [edge 2 node 2] [edge 2 cost]
 ...
@@ -24,9 +26,34 @@ clusters is set to 4.  What is the maximum spacing of a 4-clustering?
 
 ADVICE: If you're not getting the correct answer, try debugging your algorithm using some small test cases.  And then
 post them to the discussion forum!
+
  */
+
+const val filename = "clustering1.txt"
+const val indexOffset = -1 // The file is one-based, which doesn't play nice with our Union-Find impl
+const val k = 4
+
 fun main() {
-    println("Heyo")
+    val graph = readInput(filename)
+    val spacing = Clusterizer().clusterize(graph, k)
+    println("Spacing = $spacing")
 }
 
+fun readInput(filename: String): WeightedUndirectedGraph {
+    val result = WeightedUndirectedGraphImpl()
 
+    var size = 0
+    File(filename).forEachLine {
+        val (a, b, weight) = it.split(' ')
+        result.addEdge(
+                a.toInt() + indexOffset,
+                b.toInt() + indexOffset,
+                weight.toInt()
+        )
+        size++
+    }
+
+    println("Read in $size edges.")
+
+    return result
+}

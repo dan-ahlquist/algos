@@ -27,8 +27,6 @@ NOTE: The graph implicitly defined by the data file is so big that you probably 
 sort the edges by cost.  So you will have to be a little creative to complete this part of the question.  For example,
 is there some way you can identify the smallest distances without explicitly looking at every pair of nodes?
 
-Tried: 7806, 7437, 6118
-
  */
 
 const val filename = "clustering_big.txt"
