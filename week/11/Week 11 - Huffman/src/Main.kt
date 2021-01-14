@@ -1,3 +1,4 @@
+import HuffmanTree.Symbol
 import java.io.File
 
 /*
