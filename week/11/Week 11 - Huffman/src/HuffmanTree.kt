@@ -15,8 +15,7 @@ sealed class HuffmanTree {
      */
     data class Symbol (
             val label: String,
-            override val frequency: Int,
-            var encoding: String = ""
+            override val frequency: Int
     ) : HuffmanTree()
 
     /**
@@ -29,13 +28,15 @@ sealed class HuffmanTree {
             override val frequency: Int
     ) : HuffmanTree()
 
-    /**
-     *  Join this tree and another, under a new parent Node, with this
-     *  being the left child, and the other being the right child.
-     */
-    fun join (sibling: HuffmanTree): HuffmanTree {
-        val combinedFrequency = this.frequency + sibling.frequency
-        return Parent(this, sibling, combinedFrequency)
+    companion object {
+        /**
+         *  Join two trees under a new Parent node.
+         *
+         *  @return A new Parent node with `left` and `right` as children.
+         */
+        fun join (left: HuffmanTree, right: HuffmanTree): HuffmanTree {
+            val combinedFrequency = left.frequency + right.frequency
+            return Parent(left, right, combinedFrequency)
+        }
     }
-
 }

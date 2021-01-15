@@ -24,10 +24,17 @@ post them to the discussion forum!
  */
 
 const val filename = "huffman.txt"
+//const val filename = "easy.txt"
 
 fun main() {
     val symbols = readInput(filename)
-    println(symbols.firstOrNull())
+
+    val encoder = HuffmanEncoder()
+    encoder.encode(symbols)
+
+    encoder.getEncoding().forEach { label, code ->
+        println("$label -> $code")
+    }
 }
 
 fun readInput(filename: String): List<Symbol> {
