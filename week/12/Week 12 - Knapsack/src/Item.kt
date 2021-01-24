@@ -1,4 +1,4 @@
 data class Item(
         val value: Int,
-        val weight: Int,
+        val weight: Int
 )
