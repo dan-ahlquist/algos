@@ -1,4 +1,4 @@
-package graph
+package dev.ahlquist.graph
 
 interface WeightedDirectedGraph {
     val n: Int

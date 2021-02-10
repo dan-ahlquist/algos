@@ -1,5 +1,5 @@
-import graph.WeightedDirectedGraph
-import graph.WeightedDirectedGraphImpl
+import dev.ahlquist.graph.WeightedDirectedGraph
+import dev.ahlquist.graph.WeightedDirectedGraphImpl
 import java.io.File
 
 
@@ -11,6 +11,8 @@ shortest-path problem.  Here are data files describing three graphs:
 g1.txt
 g2.txt
 g3.txt
+### Header lines removed by me ###
+### 1000/47978, 1000 47978, 1000 47978 ###
 The first line indicates the number of vertices and edges, respectively.  Each
 subsequent line describes an edge (the first two numbers are its tail and head,
 respectively) and its length (the third number).  NOTE: some of the edge lengths
@@ -39,7 +41,8 @@ For fun, try computing the shortest shortest path of the graph in the file above
 */
 
 const val filename = "g1.txt"
-const val edges = 1000
+const val vertices = 1000
+const val edges = 47978
 
 fun main() {
     val items = readInput(filename)

@@ -1,4 +1,4 @@
-package graph
+package dev.ahlquist.graph
 
 class WeightedDirectedGraphImpl: WeightedDirectedGraph {
     override val n: Int
