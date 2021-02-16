@@ -1,6 +1,9 @@
 package dev.ahlquist.graph
 
 class WeightedDirectedGraphImpl: WeightedDirectedGraph {
+
+    private val edges = mutableMapOf<Int, Edge>()
+
     override val n: Int
         get() = TODO("Not yet implemented")
 

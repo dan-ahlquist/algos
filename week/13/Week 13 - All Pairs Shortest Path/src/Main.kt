@@ -1,7 +1,7 @@
+import dev.ahlquist.graph.Cost
 import dev.ahlquist.graph.WeightedDirectedGraph
 import dev.ahlquist.graph.WeightedDirectedGraphImpl
 import java.io.File
-
 
 /*
 Question 1
