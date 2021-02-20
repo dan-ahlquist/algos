@@ -1,6 +1,7 @@
 package dev.ahlquist.graph
 
 import dev.ahlquist.graph.Cost.*
+import java.lang.IllegalStateException
 
 /**
  *  A subproblem for the All Pairs Shortest Path problem.
@@ -19,11 +20,18 @@ class SubProblemImpl(
         return arr[v][w]
     }
 
-    override fun set(v: Int, w: Int, value: Cost) {
-        arr[v][w] = value
+    override fun set(v: Int, w: Int, cost: Cost) {
+        if (v == w && cost is Finite && cost.value < 0) {
+            throw NegativeCycleException(v)
+        }
+        arr[v][w] = cost
     }
 
     override fun set(v: Int, w: Int, value: Int) {
-        arr[v][w] = Finite(value)
+        set(v, w, Finite(value))
     }
+
+    class NegativeCycleException(label: Int): IllegalStateException(
+            "Negative cycle detected, involving node $label."
+    )
 }
