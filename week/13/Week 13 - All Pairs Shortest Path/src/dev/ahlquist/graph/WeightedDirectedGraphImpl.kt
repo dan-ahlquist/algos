@@ -2,24 +2,37 @@ package dev.ahlquist.graph
 
 class WeightedDirectedGraphImpl: WeightedDirectedGraph {
 
-    private val edges = mutableMapOf<Int, Edge>()
-
+    private val vertices = mutableSetOf<Int>()
     override val n: Int
-        get() = TODO("Not yet implemented")
+        get() = vertices.size
 
+    private val edges = mutableSetOf<Edge>()
     override val m: Int
-        get() = TODO("Not yet implemented")
+        get() = edges.size
 
     override fun hasEdge(from: Int, to: Int): Boolean {
-        TODO("Not yet implemented")
+        return edges.any { e ->
+            e.from.label == from
+            && e.to.label == to
+        }
     }
 
     override fun getEdge(from: Int, to: Int): Edge? {
-        TODO("Not yet implemented")
+        return try {
+            edges.first { e ->
+                e.from.label == from
+                && e.to.label == to
+            }
+        } catch (e: NoSuchElementException) {
+            null
+        }
     }
 
     override fun addEdge(from: Node, to: Node, weight: Int) {
-        TODO("Not yet implemented")
+        edges.add(Edge(from, to, weight))
+
+        vertices.add(from.label)
+        vertices.add(to.label)
     }
 
     override fun hasNode(label: Int): Boolean {

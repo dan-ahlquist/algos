@@ -22,6 +22,10 @@ sealed class Cost: Comparable<Cost> {
                 is Infinite -> Infinite(other.isPositive)
             }
         }
+
+        override fun toString(): String {
+            return value.toString()
+        }
     }
 
     open class Infinite (
@@ -53,9 +57,14 @@ sealed class Cost: Comparable<Cost> {
 
         fun plus(other: Infinite): Cost {
             return when {
+                // This is not really a proper answer, but it suits my usage.
                 this.isPositive == other.isPositive -> Infinite(this.isPositive)
                 else -> throw ArithmeticException("Adding -∞ to +∞ is undefined!")
             }
+        }
+
+        override fun toString(): String {
+            return if (isPositive) "+∞" else "-∞"
         }
     }
 

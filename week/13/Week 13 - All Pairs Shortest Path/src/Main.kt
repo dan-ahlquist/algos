@@ -1,4 +1,5 @@
 import dev.ahlquist.graph.Cost
+import dev.ahlquist.graph.Node
 import dev.ahlquist.graph.WeightedDirectedGraph
 import dev.ahlquist.graph.WeightedDirectedGraphImpl
 import java.io.File
@@ -45,13 +46,19 @@ const val vertices = 1000
 const val edges = 47978
 
 fun main() {
-    val items = readInput(filename)
+    val graph = readInput(filename)
+    println("Read input graph with ${graph.n} vertices and ${graph.m} edges.")
 }
 
 fun readInput(filename: String): WeightedDirectedGraph {
     val result = WeightedDirectedGraphImpl()
-    File(filename).readLines().map {
-        TODO()
+    File(filename).readLines().map { line ->
+        val (from, to, weight) = line.split(' ')
+        result.addEdge(
+                Node(from.toInt()),
+                Node(to.toInt()),
+                weight.toInt()
+        )
     }
     return result
 }
