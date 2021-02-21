@@ -5,11 +5,11 @@ import java.lang.IllegalStateException
 
 /**
  *  A subproblem for the All Pairs Shortest Path problem.
- *  @param size the maximum oath length
+ *  @param length the maximum oath length
  *  @param dimen the number of vertices in the graph
  */
 class SubProblemImpl(
-        override val size: Int,
+        override val length: Int,
         private val dimen: Int,
 ): SubProblem {
 

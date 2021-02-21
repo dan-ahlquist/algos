@@ -1,7 +1,5 @@
-import dev.ahlquist.graph.Cost
-import dev.ahlquist.graph.Node
-import dev.ahlquist.graph.WeightedDirectedGraph
-import dev.ahlquist.graph.WeightedDirectedGraphImpl
+import dev.ahlquist.graph.*
+import dev.ahlquist.graph.SubProblemImpl.*
 import java.io.File
 
 /*
@@ -41,13 +39,35 @@ large.txt
 For fun, try computing the shortest shortest path of the graph in the file above.
 */
 
-const val filename = "g1.txt"
+const val filename_g1 = "g1.txt"
+const val filename_g2 = "g2.txt"
+const val filename_g3 = "g3.txt"
 const val vertices = 1000
 const val edges = 47978
 
 fun main() {
-    val graph = readInput(filename)
-    println("Read input graph with ${graph.n} vertices and ${graph.m} edges.")
+    val g1 = readInput(filename_g1)
+    println("Read input graph with ${g1.n} vertices and ${g1.m} edges.")
+    solveAndReport(g1, "g1")
+
+    val g2 = readInput(filename_g2)
+    println("Read input graph with ${g2.n} vertices and ${g2.m} edges.")
+    solveAndReport(g2, "g2")
+
+    val g3 = readInput(filename_g3)
+    println("Read input graph with ${g3.n} vertices and ${g3.m} edges.")
+    solveAndReport(g3, "g3")
+}
+
+private fun solveAndReport(g1: WeightedDirectedGraph, name: String) {
+    val solver: ShortestPathSolver = FloydWarshallShortestPathSolver()
+    try {
+        val path = solver.solve(g1)
+        println("Found a shortest path for graph $name:")
+        println("\t$path")
+    } catch (e: NegativeCycleException) {
+        println("Graph $name contains a negative cycle!")
+    }
 }
 
 fun readInput(filename: String): WeightedDirectedGraph {
