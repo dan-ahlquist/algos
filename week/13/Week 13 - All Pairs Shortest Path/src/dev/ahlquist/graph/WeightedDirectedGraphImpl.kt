@@ -2,6 +2,8 @@ package dev.ahlquist.graph
 
 class WeightedDirectedGraphImpl: WeightedDirectedGraph {
 
+    private val edgeLookup = mutableMapOf<Pair<Int,Int>, Edge>()
+
     private val vertices = mutableSetOf<Int>()
     override val n: Int
         get() = vertices.size
@@ -11,25 +13,21 @@ class WeightedDirectedGraphImpl: WeightedDirectedGraph {
         get() = edges.size
 
     override fun hasEdge(from: Int, to: Int): Boolean {
-        return edges.any { e ->
-            e.from.label == from
-            && e.to.label == to
-        }
+        return edgeLookup.contains(Pair(from, to))
     }
 
     override fun getEdge(from: Int, to: Int): Edge? {
         return try {
-            edges.first { e ->
-                e.from.label == from
-                && e.to.label == to
-            }
+            edgeLookup[Pair(from, to)]
         } catch (e: NoSuchElementException) {
             null
         }
     }
 
     override fun addEdge(from: Node, to: Node, weight: Int) {
+        val newEdge = Edge(from, to, weight)
         edges.add(Edge(from, to, weight))
+        edgeLookup[Pair(from.label, to.label)] = newEdge
 
         vertices.add(from.label)
         vertices.add(to.label)
