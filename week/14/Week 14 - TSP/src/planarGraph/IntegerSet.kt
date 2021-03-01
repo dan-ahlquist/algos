@@ -14,7 +14,7 @@ class IntegerSet {
     }
 
     constructor(base: SortedSet<Int>) {
-        this.base = base
+        this.base = base.toSortedSet() // shallow copy
         this.size = base.size
     }
 
@@ -31,9 +31,9 @@ class IntegerSet {
             mustInclude?.let { members.add(it) }
 
             /* Add members to the current set */
-            
 
-            result.add(IntegerSet(* members.toIntArray()))
+
+            result.add(IntegerSet(members.toSortedSet()))
         }
 
         return result
