@@ -1,5 +1,5 @@
 package planarGraph
 
 interface TourFinder {
-    fun findShortestTourLength(graph: PlanarGraph): Double
+    fun findShortestTourLength(graph: PlanarGraph): Float
 }

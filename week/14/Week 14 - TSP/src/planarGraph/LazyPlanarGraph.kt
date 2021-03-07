@@ -7,21 +7,21 @@ import kotlin.math.sqrt
 class LazyPlanarGraph(points: Set<Point>) : PlanarGraph {
 
     private val pointLookup = points.map { it.label to it }.toMap()
-    private val distLookup = mutableMapOf<String, Double>()
+    private val distLookup = mutableMapOf<String, Float>()
 
     init {
         if (points.size != pointLookup.size)
             throw duplicateLabel()
     }
 
-    override fun distance(a: Int, b: Int): Double {
+    override fun distance(a: Int, b: Int): Float {
         val pointA = pointLookup[a] ?: throw noSuchPoint(a)
         val pointB = pointLookup[b] ?: throw noSuchPoint(b)
 
         val key = key(pointA, pointB)
         return distLookup.getOrPut(key) {
             euclideanDistance(pointA, pointB)
-        }
+        }.toFloat()
     }
 
     override val size: Int = points.size
@@ -30,10 +30,10 @@ class LazyPlanarGraph(points: Set<Point>) : PlanarGraph {
 
     private fun key(a: Point, b: Point): String = "${a.label},${b.label}"
 
-    private fun euclideanDistance(a: Point, b: Point): Double {
+    private fun euclideanDistance(a: Point, b: Point): Float {
         val dx = abs(a.x - b.x)
         val dy = abs(a.y - b.y)
-        return sqrt(dx*dx + dy*dy)
+        return sqrt(dx*dx + dy*dy).toFloat()
     }
 
     companion object {

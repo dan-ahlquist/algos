@@ -5,14 +5,14 @@ import kotlin.math.pow
 
 class BellmanHeldKarp: TourFinder {
 
-    override fun findShortestTourLength(graph: PlanarGraph): Double {
+    override fun findShortestTourLength(graph: PlanarGraph): Float {
 
         val n = graph.size
-        val m = (2.0.pow((n-1).toDouble()) + 2 ).toInt() // 2^(n-1) -1
+        val m = (2.0.pow((n).toDouble())).toInt() // 2^(n-1) -1
 
         println("Allocating for n = $n, m = $m")
 
-        val arr = Array(m) { Array(n+1) { Double.POSITIVE_INFINITY } }
+        val arr = Array(m+1) { Array(n+1) { Float.POSITIVE_INFINITY } }
 
         val points = IntegerSet(* graph.labels)
 
@@ -32,6 +32,7 @@ class BellmanHeldKarp: TourFinder {
             subsets.forEach { S ->
                 S.without(1).toSet().forEach { j ->
                     val i = S.toInt(points)
+                    println("i = $i = ${Integer.toBinaryString(i)}")
 
                     val min = S.toSet()
                             .filter { it != 1 && it != j }
