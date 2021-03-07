@@ -1,5 +1,6 @@
 package planarGraph
 
+import combinations.getSubsets
 import java.lang.IllegalArgumentException
 import java.util.*
 
@@ -13,7 +14,7 @@ class IntegerSet {
         this.size = base.size
     }
 
-    constructor(base: SortedSet<Int>) {
+    constructor(base: Set<Int>) {
         this.base = base.toSortedSet() // shallow copy
         this.size = base.size
     }
@@ -22,21 +23,21 @@ class IntegerSet {
         return base
     }
 
+    fun without(n: Int): IntegerSet {
+        val copy = base.toMutableSet()
+        copy.remove(n)
+        return IntegerSet(copy)
+    }
+
     fun getAllSubsets(size: Int, mustInclude: Int? = null): Set<IntegerSet> {
         if (size < 1) throw IllegalArgumentException("Size must be > 0!")
 
-        val result = mutableSetOf<IntegerSet>()
-        while(false) {
-            val members = mutableSetOf<Int>()
-            mustInclude?.let { members.add(it) }
+        val subsetsOfBase = base.getSubsets(size)
 
-            /* Add members to the current set */
-
-
-            result.add(IntegerSet(members.toSortedSet()))
-        }
-
-        return result
+        return subsetsOfBase
+                .filter { mustInclude == null || it.contains(mustInclude) }
+                .map { IntegerSet(it) }
+                .toSet()
     }
 
     fun toBitSet(superSet: IntegerSet): BitSet {
@@ -49,6 +50,17 @@ class IntegerSet {
         if (result.cardinality() != base.size)
             throw IllegalArgumentException("Is this a subset of arg superset?")
 
+        return result
+    }
+
+    fun toInt(superSet: IntegerSet): Int {
+        return toBitSet(superSet).toInt()
+    }
+
+    private fun BitSet.toInt(): Int {
+        var result = 0
+        for (i in 0..size())
+            result += if (get(i)) (1 shl i) else 0
         return result
     }
 }

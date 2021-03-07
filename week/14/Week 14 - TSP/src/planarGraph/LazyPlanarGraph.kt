@@ -4,7 +4,7 @@ import java.security.InvalidKeyException
 import kotlin.math.abs
 import kotlin.math.sqrt
 
-class LazyPlanarGraph(private val points: List<Point>) : PlanarGraph {
+class LazyPlanarGraph(points: Set<Point>) : PlanarGraph {
 
     private val pointLookup = points.map { it.label to it }.toMap()
     private val distLookup = mutableMapOf<String, Double>()
@@ -25,6 +25,8 @@ class LazyPlanarGraph(private val points: List<Point>) : PlanarGraph {
     }
 
     override val size: Int = points.size
+
+    override val labels: IntArray = points.map { it.label }.toIntArray()
 
     private fun key(a: Point, b: Point): String = "${a.label},${b.label}"
 

@@ -29,7 +29,7 @@ class Subsetter<T> {
 
                 if (j == i) {
                     // special case where prev[i-1, j] is undefined
-                    // but we know it's {{m_1 .. m_r}}
+                    // but we know it's {{m_1 .. m_i}}
                     curr[j] = setOf(superList.take(i).toSet())
                     continue
                 }

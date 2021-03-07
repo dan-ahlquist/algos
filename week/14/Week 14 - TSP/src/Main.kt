@@ -1,7 +1,7 @@
-import planarGraph.LazyPlanarGraph
-import planarGraph.PlanarGraph
-import planarGraph.Point
+import planarGraph.*
 import java.io.File
+import java.util.*
+import kotlin.Comparator
 
 /*
 Question 1
@@ -39,24 +39,28 @@ const val filename = "tsp.txt"
 fun main() {
     val points = readInput(filename)
 
-//    val points = listOf(
-//            Point(1, 1.03, 4.16),
-//            Point(2, 5.03, 7.16),
-//    )
-//    val pg: PlanarGraph = LazyPlanarGraph(points)
-//
-//    val c = pg.distance(1, 2)
-//    println("Side c has length $c")
+//    val superSet = IntegerSet(1,2,3,4,5,6)
+//    val intSet = IntegerSet(1,2,5)
+//    val bitString = intSet.toInt(superSet)
+//    println(Integer.toBinaryString(bitString).padStart(6,'0'))
+
+    val G: PlanarGraph = LazyPlanarGraph(points)
+
+    val tf: TourFinder = BellmanHeldKarp()
+
+    val shortest = tf.findShortestTourLength(G)
+
+    println("Shortest tour length = $shortest")
 }
 
-fun readInput(filename: String): List<Point> {
-    val result = mutableListOf<Point>()
+fun readInput(filename: String): SortedSet<Point> {
+    val result = mutableSetOf<Point>()
     var label = 1
     File(filename).forEachLine {
         val (x, y) = it.split(' ').map(String::toDouble)
         result.add(Point(label++, x, y))
     }
-    return result
+    return result.toSortedSet { o1, o2 -> o1.label.compareTo(o2.label)}
 }
 
 

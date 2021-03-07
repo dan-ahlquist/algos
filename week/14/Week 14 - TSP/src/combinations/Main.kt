@@ -1,7 +1,5 @@
 package combinations
 
-import java.lang.StringBuilder
-
 fun main() {
     val s = setOf(1,2,3,4)
     val subs = s.getSubsets(4)
