@@ -22,7 +22,9 @@ class Subsetter<T> {
 
             val newItem = superList[i-1]
 
-            for (j in 1..i) {
+            val w = i.coerceAtMost(r)
+
+            for (j in 1..w) {
 
                 if (j == i) {
                     // special case where prev[i-1, j] is undefined
