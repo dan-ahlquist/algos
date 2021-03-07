@@ -11,6 +11,7 @@ class Subsetter<T> {
         if (n < r) throw IllegalArgumentException("Cardinality must be <= superset size.")
 
         if (r == 0) return setOf(emptySet())
+        if (r == n) return setOf(superset)
 
         // Initialize the n=1 row
         var prev = Array(2) { setOf( emptySet<T>() ) }
