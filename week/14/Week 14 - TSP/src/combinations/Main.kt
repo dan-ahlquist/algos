@@ -6,10 +6,7 @@ fun main() {
     val s = setOf(1,2,3,4)
     val subs = s.getSubsets(2)
     subs.forEach {
-        val sb = StringBuilder("{")
-        it.forEach { value ->
-            sb.append("$value,")
-        }
-        sb.append("}")
+        val s = it.joinToString(prefix = "{", postfix = "}")
+        println(s)
     }
 }

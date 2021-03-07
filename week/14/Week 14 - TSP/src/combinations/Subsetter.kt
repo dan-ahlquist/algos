@@ -1,7 +1,6 @@
 package combinations
 
 import java.lang.IllegalArgumentException
-import java.lang.Math.min
 
 class Subsetter<T> {
     fun getSubsets(superset: Set<T>, cardinality: Int): Set<Set<T>> {
@@ -19,17 +18,22 @@ class Subsetter<T> {
 
         for (i in 2..n) {
             // Initialize this row
-            val w = min(n-1, r)
-            val curr = Array(w) { setOf( emptySet<T>() ) }
-            if (n <= r) {
-                curr[w] = setOf(superList.take(n).toSet())
-            }
+            val curr = Array(i+1) { setOf( emptySet<T>() ) }
 
-            for (j in 1..w) {
-                val item = superList[n-1]
+            val newItem = superList[i-1]
+
+            for (j in 1..i) {
+
+                if (j == i) {
+                    // special case where prev[i-1, j] is undefined
+                    // but we know it's {{m_1 .. m_r}}
+                    curr[j] = setOf(superList.take(i).toSet())
+                    continue
+                }
+
                 val a = mutableSetOf<Set<T>>()
                 prev[j-1].forEach {
-                    a.add(it.union(setOf(item)))
+                    a.add(it.union(setOf(newItem)))
                 }
 
                 val b = mutableSetOf<Set<T>>()
