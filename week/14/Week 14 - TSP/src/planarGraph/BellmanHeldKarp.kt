@@ -21,18 +21,18 @@ class BellmanHeldKarp: TourFinder {
         for (j in 2..n) {
             val set = IntegerSet(1, j)
             val i = set.toInt(points)
-            println("i, j = $i, $j")
+//            println("i, j = $i, $j")
             arr[i][j] = graph.distance(1, j)
         }
 
         for (s in 3..n) {
-            println("Solving s = $s")
+//            println("Solving s = $s")
 
             val subsets = points.getAllSubsets(s, 1)
             subsets.forEach { S ->
                 S.without(1).toSet().forEach { j ->
                     val i = S.toInt(points)
-                    println("i = $i = ${Integer.toBinaryString(i)}")
+//                    println("i = $i = ${Integer.toBinaryString(i)}")
 
                     val min = S.toSet()
                             .filter { it != 1 && it != j }

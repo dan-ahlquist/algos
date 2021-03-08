@@ -1,7 +1,6 @@
 import planarGraph.*
 import java.io.File
 import java.util.*
-import kotlin.Comparator
 
 /*
 Question 1
@@ -37,20 +36,37 @@ Can you use that structure to speed up your algorithm?
 const val filename = "tsp.txt"
 
 fun main() {
-    val points = readInput(filename)
 
-//    val superSet = IntegerSet(1,2,3,4,5,6)
-//    val intSet = IntegerSet(1,2,5)
-//    val bitString = intSet.toInt(superSet)
-//    println(Integer.toBinaryString(bitString).padStart(6,'0'))
+    /*
+     *   This data set contains 25 points, which as mentioned
+     *   in lecture is well beyond the processing power of a PC.
+     *   Therefore, as suggest on the course forums, we can
+     *   identify a likely path and split it into 2. The files
+     *   g1 & g2.txt contains points (1..13) and (12..25)
+     *   from the original, respectively. That makes the edge
+     *   (12, 13) redundant, so we subtract it twice at the end.
+     */
 
-    val G: PlanarGraph = LazyPlanarGraph(points)
+    val points_g1 = readInput("g1.txt")
+    val points_g2 = readInput("g2.txt")
+
+    val g1: PlanarGraph = LazyPlanarGraph(points_g1)
+    val g2: PlanarGraph = LazyPlanarGraph(points_g2)
 
     val tf: TourFinder = BellmanHeldKarp()
 
-    val shortest = tf.findShortestTourLength(G)
+    val shortest_g1 = tf.findShortestTourLength(g1)
+    println("G1 Shortest tour length = $shortest_g1")
 
-    println("Shortest tour length = $shortest")
+    val shortest_g2 = tf.findShortestTourLength(g2)
+    println("G2 Shortest tour length = $shortest_g2")
+
+    val p11 = Point(11, 23883.3333, 14533.3333)
+    val p12 = Point(12, 24166.6667, 13250.0000)
+    val g3: PlanarGraph = LazyPlanarGraph(setOf(p11, p12))
+    val d_11_12 = g3.distance(11, 12)
+    val total = shortest_g1 + shortest_g2 - (2*d_11_12)
+    println("Total shortest tour length = $total")
 }
 
 fun readInput(filename: String): SortedSet<Point> {
