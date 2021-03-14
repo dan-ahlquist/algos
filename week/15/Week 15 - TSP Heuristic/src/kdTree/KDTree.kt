@@ -8,7 +8,7 @@ sealed class KDTree {
 
     data class Internal (
         val axis: Axis,
-        val predicate: (Point) -> Direction,
+        val point: Point,
         var left: KDTree? = null,
         var right: KDTree? = null,
     ) : KDTree()

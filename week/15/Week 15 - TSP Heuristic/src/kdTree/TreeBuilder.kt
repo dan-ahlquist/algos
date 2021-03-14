@@ -17,45 +17,31 @@ class TreeBuilder {
         }
 
         val nextAxis = if (axis == X) Y else X
-        val nextPredicate = getNextPredicate(points, nextAxis)
-        val leftPoints = points.filter { nextPredicate.invoke(it) == Left }
-        val rightPoints = points.filter { nextPredicate.invoke(it) == Right }
+        val median = getMedian(points, nextAxis)
+        val leftPoints = points.filter { it.compare(median, nextAxis) == Left }
+        val rightPoints = points.filter { it.compare(median, nextAxis) == Right }
         val left = build(leftPoints, depth - 1)
         val right = build(rightPoints, depth - 1)
-        return KDTree.Internal(nextAxis, nextPredicate, left, right)
+        return KDTree.Internal(nextAxis, median, left, right)
     }
 
-    private fun getNextPredicate(points: List<Point>, axis: Axis): (Point) -> Direction {
+    private fun getMedian(points: List<Point>, axis: Axis): Point {
         return when(axis) {
-            X -> getXPredicate(points)
-            Y -> getYPredicate(points)
+            X -> getXMedian(points)
+            Y -> getYMedian(points)
         }
     }
 
-    private fun getXPredicate(points: List<Point>): (Point) -> Direction {
-        val sample = sample(points, medianSampleSize)
-        val index = (sample.size/2) % medianSampleSize // For safety
-        val median = sample.sortedBy { it.x } [index]
-
-        return { point ->
-            if (point.x <= median.x)
-                Left
-            else
-                Right
-        }
-    }
-
-    private fun getYPredicate(points: List<Point>): (Point) -> Direction {
+    private fun getXMedian(points: List<Point>): Point {
         val sample = sample(points, medianSampleSize)
         val index = (sample.size/2) //% medianSampleSize // For safety
-        val median = sample.sortedBy { it.y } [index]
+        return sample.sortedBy { it.x } [index]
+    }
 
-        return { point ->
-            if (point.y <= median.y)
-                Left
-            else
-                Right
-        }
+    private fun getYMedian(points: List<Point>): Point {
+        val sample = sample(points, medianSampleSize)
+        val index = (sample.size/2) //% medianSampleSize // For safety
+        return sample.sortedBy { it.y } [index]
     }
 
     private fun sample(points: List<Point>, n: Int): Set<Point> {
