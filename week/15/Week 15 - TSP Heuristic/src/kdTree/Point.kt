@@ -14,12 +14,16 @@ data class Point (
         return sqrt(dx * dx + dy * dy)
     }
 
-    fun compare(median: Point, axis: Axis): Direction {
-        val componentThis = this.component(axis)
-        val componentMedian = median.component(axis)
-
-        val diff = componentThis - componentMedian
+    fun compare(borderPoint: Point, axis: Axis): Direction {
+        val diff = distToBorder(borderPoint, axis)
         return if (diff <= 0) Direction.Left else Direction.Right
+    }
+
+    fun distToBorder(borderPoint: Point, axis: Axis): Double {
+        val componentThis = this.component(axis)
+        val componentBorder = borderPoint.component(axis)
+
+        return componentThis - componentBorder
     }
 
     fun component(axis: Axis): Double {

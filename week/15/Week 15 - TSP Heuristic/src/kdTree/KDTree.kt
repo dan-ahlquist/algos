@@ -3,14 +3,14 @@ package kdTree
 sealed class KDTree {
 
     data class Leaf (
-        val points: List<Point>,
+        val points: MutableList<Point>,
     ) : KDTree()
 
     data class Internal (
         val axis: Axis,
         val point: Point,
-        var left: KDTree? = null,
-        var right: KDTree? = null,
+        val left: KDTree,
+        val right: KDTree,
     ) : KDTree()
 }
 

@@ -13,7 +13,7 @@ class TreeBuilder {
         if (depth < 0) throw IllegalArgumentException("Depth must be positive! depth = $depth")
         if (depth == 0 || points.isEmpty()) {
             println("Leaf node size ${points.size} created.")
-            return KDTree.Leaf(points)
+            return KDTree.Leaf(points.toMutableList())
         }
 
         val nextAxis = if (axis == X) Y else X
