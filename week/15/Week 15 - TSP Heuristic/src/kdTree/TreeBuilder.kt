@@ -11,7 +11,7 @@ class TreeBuilder {
 
     fun build(points: List<Point>, depth: Int, axis: Axis = X): KDTree {
         if (depth < 0) throw IllegalArgumentException("Depth must be positive! depth = $depth")
-        if (depth == 0) {
+        if (depth == 0 || points.isEmpty()) {
             println("Leaf node size ${points.size} created.")
             return KDTree.Leaf(points)
         }
@@ -46,7 +46,7 @@ class TreeBuilder {
 
     private fun sample(points: List<Point>, n: Int): Set<Point> {
         val result = mutableSetOf<Point>()
-        val resultSize = min(n, result.size)
+        val resultSize = min(n, points.size)
 
         while (result.size < resultSize) {
             result.add(points.random())
