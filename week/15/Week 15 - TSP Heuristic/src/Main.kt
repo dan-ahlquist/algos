@@ -1,3 +1,9 @@
+import kdTree.Point
+import kdTree.TreeBuilder
+import java.io.File
+import kotlin.math.log2
+import kotlin.math.sqrt
+
 /*
 Question 1
 In this assignment we will revisit an old friend, the traveling salesman problem
@@ -7,6 +13,7 @@ Here is a data file describing a TSP instance (original source:
 http://www.math.uwaterloo.ca/tsp/world/bm33708.tsp).
 
 nn.txt
+First line removed by me: 33708
 The first line indicates the number of cities. Each city is a point in the plane,
 and each subsequent line indicates the x- and y-coordinates of a single city.
 
@@ -36,5 +43,38 @@ of standard Euclidean distance.]
 const val filename = "nn.txt"
 
 fun main() {
-    println("Heyo")
+    val points = readInput(filename)
+    printStat(points)
+
+    // This gives sqrt(n) leaf nodes, of size sqrt(n).
+    // Therefore, brute search within a leaf node is O(n).
+    val depth = log2(sqrt(points.size.toDouble())).toInt() + 1
+    println("Depth of tree will be $depth")
+
+    val builder = TreeBuilder().apply { medianSampleSize = 5 }
+    val tree = builder.build(points, depth)
+
+
+}
+
+fun readInput(filename: String): List<Point> {
+    val result = mutableListOf<Point>()
+
+    File(filename).forEachLine {
+        val (label, x, y) = it.split(' ', limit = 3)
+        val point = Point(label.toInt(), x.toDouble(), y.toDouble())
+        result.add(point)
+    }
+
+    return result
+}
+
+fun printStat(points: List<Point>) {
+    val xMax = points.maxOfOrNull { it.x } ?: Float.MAX_VALUE
+    val xMin = points.minOfOrNull { it.x } ?: Float.MIN_VALUE
+    val yMax = points.maxOfOrNull { it.y } ?: Float.MAX_VALUE
+    val yMin = points.minOfOrNull { it.y } ?: Float.MIN_VALUE
+
+    println("Read in ${points.size} points. x range: [$xMin, $xMax]. y range: [$yMin, $yMax]")
+
 }
