@@ -19,8 +19,9 @@ class GreedyTourFinder(
         val builder = TreeBuilder().apply { medianSampleSize = 5 }
         val tree = builder.build(points, depth)
 
+        val first = points.first()
         var result = 0.0
-        var curr = points.first()
+        var curr = first
         for (n in 1 until points.size) { //TODO check until vs ..
             val next = searcher.getNearestNeighbor(curr, tree)
             val dist = curr.euclideanDistance(next)
@@ -29,6 +30,10 @@ class GreedyTourFinder(
             pruner.remove(curr, tree)
             curr = next
         }
+
+        val lastLeg = curr.euclideanDistance(first)
+        println("Adding $lastLeg to account for the last leg.")
+        result += lastLeg
 
         return result
     }

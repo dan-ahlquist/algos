@@ -1,5 +1,6 @@
 import kdTree.Point
 import shortestTour.GreedyTourFinder
+import shortestTour.SlowTourFinder
 import java.io.File
 
 /*
@@ -37,10 +38,6 @@ Euclidean distances (i.e., the formula above but without the square root) than
 Euclidean distances.  But don't forget to report the length of the tour in terms
 of standard Euclidean distance.]
 
-Tried:
-    482029.5610903798
-    1185255.6082905186
-
  */
 
 const val filename = "nn.txt"
@@ -49,7 +46,8 @@ fun main() {
     val points = readInput(filename)
     printStat(points)
 
-    val tf = GreedyTourFinder()
+//    val tf = GreedyTourFinder()
+    val tf = SlowTourFinder()
     val cost = tf.getAShortTour(points)
 
     println("Found a short tour of cost $cost. Good luck!")
