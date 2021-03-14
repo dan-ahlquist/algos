@@ -16,7 +16,7 @@ class TreeSearcher {
                 is Leaf -> { //The first entry must be
                     if (alreadyDidLeaf) throw IllegalStateException("Why are we hitting two leafs in the path??")
                     alreadyDidLeaf = true
-                    val nn = getNearestNeighbor(point, node.points)
+                    val nn = getNearestNeighbor(point, node.points) ?: return@forEach
                     nearest = nn
                     nearestDistance = point.euclideanDistance(nn)
                 }
@@ -25,7 +25,7 @@ class TreeSearcher {
                     if (distToBorder < nearestDistance) {
                         //TODO optimize to just left or right half
                         val newNeighborhood = getNeighborhood(node)
-                        val nn = getNearestNeighbor(point, newNeighborhood)
+                        val nn = getNearestNeighbor(point, newNeighborhood) ?: return@forEach
                         nearest = nn
                         nearestDistance = point.euclideanDistance(nn)
                     }
@@ -77,10 +77,13 @@ class TreeSearcher {
     }
 
     /** Very force, much broot */
-    private fun getNearestNeighbor(point: Point, list: List<Point>): Point {
+    private fun getNearestNeighbor(point: Point, list: List<Point>): Point? {
+        if (list.isEmpty()) return null
         var nearest = list.first()
         var nearestDist = point.euclideanDistance(nearest)
         list.forEach { candidate ->
+            if (candidate.label == point.label) return@forEach
+
             val distance = point.euclideanDistance(candidate)
             if (distance < nearestDist) {
                 nearest = candidate

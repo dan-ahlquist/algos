@@ -1,8 +1,6 @@
 import kdTree.Point
-import kdTree.TreeBuilder
+import shortestTour.GreedyTourFinder
 import java.io.File
-import kotlin.math.log2
-import kotlin.math.sqrt
 
 /*
 Question 1
@@ -38,6 +36,11 @@ nearest neighbor heuristic for this instance, rounded down to the nearest intege
 Euclidean distances (i.e., the formula above but without the square root) than
 Euclidean distances.  But don't forget to report the length of the tour in terms
 of standard Euclidean distance.]
+
+Tried:
+    482029.5610903798
+    1185255.6082905186
+
  */
 
 const val filename = "nn.txt"
@@ -46,15 +49,10 @@ fun main() {
     val points = readInput(filename)
     printStat(points)
 
-    // This gives sqrt(n) leaf nodes, of size sqrt(n).
-    // Therefore, brute search within a leaf node is O(n).
-    val depth = log2(sqrt(points.size.toDouble())).toInt() + 1
-    println("Depth of tree will be $depth")
+    val tf = GreedyTourFinder()
+    val cost = tf.getAShortTour(points)
 
-    val builder = TreeBuilder().apply { medianSampleSize = 5 }
-    val tree = builder.build(points, depth)
-
-
+    println("Found a short tour of cost $cost. Good luck!")
 }
 
 fun readInput(filename: String): List<Point> {
@@ -76,5 +74,4 @@ fun printStat(points: List<Point>) {
     val yMin = points.minOfOrNull { it.y } ?: Float.MIN_VALUE
 
     println("Read in ${points.size} points. x range: [$xMin, $xMax]. y range: [$yMin, $yMax]")
-
 }
