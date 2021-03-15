@@ -23,11 +23,11 @@ class GreedyTourFinder(
         var result = 0.0
         var curr = first
         for (n in 1 until points.size) { //TODO check until vs ..
+            pruner.remove(curr, tree)
             val next = searcher.getNearestNeighbor(curr, tree)
             val dist = curr.euclideanDistance(next)
             result += dist
 
-            pruner.remove(curr, tree)
             curr = next
         }
 
