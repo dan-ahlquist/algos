@@ -1,3 +1,4 @@
+import twoSat.Instance
 import java.io.File
 
 /*
@@ -43,5 +44,6 @@ const val filename = "2sat1.txt"
 fun main() {
 }
 
-fun readInput(filename: String):  {
+fun readInput(filename: String): Instance {
+    TODO()
 }
