@@ -1,5 +1,6 @@
 import twoSat.Clause
 import twoSat.Instance
+import twoSat.SatChecker
 import java.io.File
 import kotlin.math.abs
 
@@ -46,8 +47,25 @@ for more details.
 const val filename = "2sat1.txt"
 
 fun main() {
+    listOf(
+//            "2sat0.txt",
+            "2sat1.txt",
+            "2sat2.txt",
+            "2sat3.txt",
+            "2sat4.txt",
+            "2sat5.txt",
+            "2sat6.txt",
+    )
+    .forEach { checkInstance(it) }
+}
+
+fun checkInstance(filename: String) {
     val instance = readInput(filename)
-    println(instance)
+//    println(instance)
+
+    val satisfiable = SatChecker().isSatisfiable(instance)
+    val bit = if (satisfiable) 1 else 0
+    println("$bit - $filename")
 }
 
 fun readInput(filename: String): Instance {

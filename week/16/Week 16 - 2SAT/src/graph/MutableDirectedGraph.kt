@@ -12,6 +12,7 @@ class Node<T> (
 
 interface MutableDirectedGraph<T> {
     val nodeCount: Int
+    fun getNode(data: T): Node<T>?
     fun getNodes(): Set<Node<T>>
     fun hasNode(a: T): Boolean
     fun hasEdge(a: T, b: T): Boolean
@@ -24,4 +25,5 @@ interface MutableDirectedGraph<T> {
     fun reverse()
 
     fun print()
+    fun printSccs()
 }

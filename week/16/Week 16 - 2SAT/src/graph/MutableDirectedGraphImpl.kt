@@ -5,6 +5,10 @@ class MutableDirectedGraphImpl<T>(
         private val edges: MutableList<Edge<T>> = mutableListOf()
 ): MutableDirectedGraph<T> {
 
+    override fun getNode(data: T): Node<T>? {
+        return nodes[data]
+    }
+
     override fun getNodes(): Set<Node<T>> {
         return nodes.values.toSet()
     }
@@ -70,6 +74,12 @@ class MutableDirectedGraphImpl<T>(
                 sb.append("${neighbor.data} ")
             }
             println(sb.toString())
+        }
+    }
+
+    override fun printSccs() {
+        nodes.values.forEach {
+            println("Node ${it.data} is in SCC ${it.containingScc}")
         }
     }
 }
