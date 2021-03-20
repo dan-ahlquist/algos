@@ -1,5 +1,7 @@
+import twoSat.Clause
 import twoSat.Instance
 import java.io.File
+import kotlin.math.abs
 
 /*
 In this assignment you will implement one or more algorithms for the 2SAT
@@ -11,6 +13,8 @@ problem.  Here are 6 different 2SAT instances:
 2sat4.txt
 2sat5.txt
 2sat6.txt
+
+Header removed by me: 100000
 The file format is as follows.  In each instance, the number of variables and
 the number of clauses is the same, and this number is specified on the first
 line of the file.  Each subsequent line specifies a clause via its two literals,
@@ -42,8 +46,27 @@ for more details.
 const val filename = "2sat1.txt"
 
 fun main() {
+    val instance = readInput(filename)
+    println(instance)
 }
 
 fun readInput(filename: String): Instance {
-    TODO()
+    val vars = mutableSetOf<Int>()
+    val clauses = mutableSetOf<Clause>()
+
+    File(filename).forEachLine {
+        val (a, b) = it.split(' ').map(String::toInt)
+
+        val var1 = abs(a)
+        val cond1 = a < 0
+        vars.add(var1)
+
+        val var2 = abs(b)
+        val cond2 = b < 0
+        vars.add(var2)
+
+        clauses.add(Clause(var1, cond1, var2, cond2))
+    }
+
+    return Instance(vars, clauses)
 }
